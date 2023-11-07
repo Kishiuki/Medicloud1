@@ -1,0 +1,2 @@
+ALTER TABLE `lab_data_pasien` ADD `akun_id_pasien` INT(5) NOT NULL DEFAULT '0' AFTER `kewarganegaraan`, ADD `reg_as` VARCHAR(50) NOT NULL AFTER `akun_id_pasien`; 
+ALTER TABLE `lab_data_pemeriksaan` ADD `self_register` INT(1) NOT NULL DEFAULT '0' AFTER `referensi_bayar`, ADD `verified` INT(1) NOT NULL DEFAULT '1' AFTER `self_register`, ADD `verified_by` VARCHAR(40) NOT NULL AFTER `verified`, ADD `verified_date` DATETIME NULL DEFAULT NULL AFTER `verified_by`; 

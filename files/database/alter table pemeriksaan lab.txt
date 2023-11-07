@@ -1,0 +1,2 @@
+ALTER TABLE `lab_data_pemeriksaan` ADD `plan_tgl_periksa` DATE NULL AFTER `verified_date`, ADD `plan_jam_periksa` VARCHAR(10) NOT NULL AFTER `plan_tgl_periksa`; 
+ALTER TABLE `lab_data_pemeriksaan` ADD `kode_sales` VARCHAR(40) NOT NULL AFTER `plan_jam_periksa`;

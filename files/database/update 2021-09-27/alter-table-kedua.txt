@@ -1,0 +1,6 @@
+ALTER TABLE `tbl_pendaftaran` ADD `clinic_id` INT(11) NOT NULL AFTER `id_pendaftaran`, ADD INDEX `clinic_id` (`clinic_id`); 
+ALTER TABLE `tbl_antrian` ADD `clinic_id` INT(11) NOT NULL AFTER `id_antrian`, ADD INDEX `clinic_id` (`clinic_id`); 
+
+ALTER TABLE `tbpoli` ADD `clinic_id` INT(11) NOT NULL AFTER `creator_id`, ADD INDEX `clinic_id` (`clinic_id`); 
+ALTER TABLE `tbdaftardokter` ADD `clinic_id` INT(11) NOT NULL AFTER `createdAt`, ADD INDEX `clinic_id` (`clinic_id`); 
+ALTER TABLE `tbl_triase` ADD `clinic_id` INT(11) NOT NULL AFTER `id_triase`, ADD INDEX `clinic_id` (`clinic_id`); 
