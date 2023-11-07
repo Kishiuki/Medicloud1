@@ -76,9 +76,13 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'u1723455_medicloud',
-	'password' => 'Medi2023!.',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'u1723455_medicloud',
+
+	// 'username' => 'u1723455_medicloud',
+	// 'password' => 'Medi2023!.',
+	// 'database' => 'u1723455_medicloud',
 
 	// 'username' => 'labklini_medicloud',
 	// 'password' => 'medicloud2021',

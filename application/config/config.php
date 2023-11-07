@@ -32,37 +32,37 @@ $client  = @$_SERVER['HTTP_CLIENT_IP'];
 $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
 $remote  = $_SERVER['REMOTE_ADDR'];
 
-if(filter_var($client, FILTER_VALIDATE_IP)){
+if (filter_var($client, FILTER_VALIDATE_IP)) {
 	$ip = $client;
-}
-elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+} elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
 	$ip = $forward;
-}else{
+} else {
 	$ip = $remote;
 }
-$client_ip=explode(".",$ip);
-if(in_array('localhost',$client_ip) || in_array('127',$client_ip) || in_array('::1',$client_ip)){
-	$base_server="localhost"; // server local development
-}else{
+$client_ip = explode(".", $ip);
+if (in_array('localhost', $client_ip) || in_array('127', $client_ip) || in_array('::1', $client_ip)) {
+	$base_server = "localhost"; // server local development
+} else {
 	array_pop($client_ip);
-	$subnet_ip=implode(".",$client_ip);
-	$base_server=$client_ip; // server vps
+	$subnet_ip = implode(".", $client_ip);
+	$base_server = $client_ip; // server vps
 }
-$base_server="localhost";// jangan letakkan http didepan. cukup localhost atau IP addressnya
-$config['base_url'] = ($base_server=="localhost") ? "https://$base_server/ctc-medicloud/" : "https://$base_server/"; 
+$base_server = "localhost:8080"; // jangan letakkan http didepan. cukup localhost atau IP addressnya
+$config['base_url'] = "http://$base_server/medicloud";
+// $config['base_url'] = ($base_server=="localhost") ? "https://$base_server/ctc-medicloud/" : "https://$base_server/"; 
 // Jika setting diatas tidak otomatis jalan, enable kan setting dibawah ini ketika di VPS
-$base_server="admin.medicloud.co.id";
-$config['base_url'] = "https://$base_server/"; 
+// $base_server="admin.medicloud.co.id";
+// $config['base_url'] = "https://$base_server/"; 
 
-$socket_port=5160;
-$config['SERVER_SOCKET_ANTRIAN'] = "$base_server:$socket_port";  
+$socket_port = 5160;
+$config['SERVER_SOCKET_ANTRIAN'] = "$base_server:$socket_port";
 // for antrian
-$config['assets']			= $config['base_url'].'assets/antrian/'; // change this if required
-$config['images'] 				= $config['assets'].'images/';
-$config['js'] 				= $config['assets'].'js/';
-$config['scripts'] 				= $config['assets'].'scripts/';
-$config['rekaman'] 				= $config['assets'].'rekaman/';
-$config['rekaman_pria'] 				= $config['assets'].'rekaman_pria/';
+$config['assets']			= $config['base_url'] . 'assets/antrian/'; // change this if required
+$config['images'] 				= $config['assets'] . 'images/';
+$config['js'] 				= $config['assets'] . 'js/';
+$config['scripts'] 				= $config['assets'] . 'scripts/';
+$config['rekaman'] 				= $config['assets'] . 'rekaman/';
+$config['rekaman_pria'] 				= $config['assets'] . 'rekaman_pria/';
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -420,7 +420,7 @@ $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'cisession';
 // $config['sess_expiration'] = 60*60*24; // default 7200 : 2hours
 $config['sess_expiration'] = 0;
-$config['sess_save_path'] = NULL;
+$config['sess_save_path'] = sys_get_temp_dir(); //NULL
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300; // default 300
 $config['sess_regenerate_destroy'] = FALSE;

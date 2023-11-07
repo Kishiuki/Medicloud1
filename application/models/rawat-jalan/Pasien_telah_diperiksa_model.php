@@ -17,6 +17,7 @@ class Pasien_telah_diperiksa_model extends CI_Model
 		$this->tableTindakan = "tbl_layanan_poli";
 		$this->tablePemeriksaanDiagnosa = "tbl_pemeriksaan_diagnosa";
 		$this->tablePemeriksaanTindakan = "tbl_pemeriksaan_tindakan";
+		$this->tableDokter = "tbdaftardokter";
 		$this->load->helper('ctc');
 	}
 
@@ -82,7 +83,7 @@ class Pasien_telah_diperiksa_model extends CI_Model
 		}
 		$sWhere .= ($sWhere == "") ? " WHERE " : " AND ";
 		$sWhere .= " tbl_obat_detail.status = 1 ";
-		
+
 		$sLimit = $output->limit;
 		$sGroup = "GROUP BY idObat";
 		$sOrder = $output->order;
@@ -173,6 +174,24 @@ class Pasien_telah_diperiksa_model extends CI_Model
 		$this->db->where(array("fk_pemeriksaan" => $id_pemeriksaan));
 		return $this->db->get()->result_object();
 	}
+	function _search_dokter_diagnosa_select2($id_pemeriksaan)
+	{
+		$this->db->select("fk_dokter as id, namaDokter as text");
+		$this->db->from($this->tablePemeriksaanDiagnosa . " diagper");
+		$this->db->join($this->tableDokter . " dokter", "diagper.fk_dokter=dokter.idDokter");
+		$this->db->where(array("fk_pemeriksaan" => $id_pemeriksaan));
+		$this->db->group_by("fk_dokter");
+		return $this->db->get()->result_array();
+	}
+	function _search_dokter_tindakan_select2($id_pemeriksaan)
+	{
+		$this->db->select("fk_dokter as id, namaDokter as text");
+		$this->db->from($this->tablePemeriksaanTindakan . " tinper");
+		$this->db->join($this->tableDokter . " dokter", "tinper.fk_dokter=dokter.idDokter");
+		$this->db->where(array("fk_pemeriksaan" => $id_pemeriksaan));
+		$this->db->group_by("fk_dokter");
+		return $this->db->get()->result_array();
+	}
 	function _search_diagnosa_pemeriksaan_select2($id_pemeriksaan)
 	{
 		$this->db->select("fk_diagnosa as id,namaDiagnosis as text");
@@ -249,7 +268,7 @@ class Pasien_telah_diperiksa_model extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	function tampilkan_temp($clinic_id,$id_pendaftaran)
+	function tampilkan_temp($clinic_id, $id_pendaftaran)
 	{
 
 		$query = "SELECT o.kode,o.nama,s.namaSatuanobat,td.*,aturan.nama_aturan_pakai,cara.nama_cara_pakai

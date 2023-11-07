@@ -198,6 +198,7 @@ class Pemeriksaan extends CI_Controller
 		}
 		$clinic_id = (!isset($gets['clinic_id']) || $gets['clinic_id'] == 'default') ? getClinic()->id : htmlentities(trim($gets['clinic_id']));
 		if ($clinic_id == 'allclinic') return sendError("Klinik Belum di pilih");
+		// $id_pendaftaran = $data['id'];
 		// before insert, do check stock
 		$stock = $this->pemeriksaan->check_stock_obat($id_obat);
 		if (empty($stock)) sendError("Tidak ada stok obat");
@@ -211,9 +212,11 @@ class Pemeriksaan extends CI_Controller
 			"satuan"	=> $satuan,
 			'cara_pakai' 	=> $cara_pakai,
 			'aturan_pakai' 	=> $aturan_pakai,
-			"status" 		=> 1,
-			"clinic_id"=>$clinic_id,
-			"fk_pendaftaran"=>$resep_id
+			"clinic_id" => $clinic_id,
+			// "fk_pendaftaran" => 0,
+			"fk_pendaftaran" => $id_pendaftaran,
+			// "fk_pendaftaran" => $resep_id,
+			"status" 		=> 1
 		);
 		$save = $this->pemeriksaan->insert_temp($data);
 		sendSuccess("Ditambahkan " . $save);
@@ -225,12 +228,20 @@ class Pemeriksaan extends CI_Controller
 		$hapus = $this->pemeriksaan->hapus_temp($id);
 		sendSuccess("Berhasil (" . $hapus . ")");
 	}
-	function load_temp()
+	function load_temp($id = '') //tanpa $id
 	{
 		$gets = modify_post($this->input->get());
 		$clinic_id = (!isset($gets['clinic_id']) || $gets['clinic_id'] == 'default') ? getClinic()->id : htmlentities(trim($gets['clinic_id']));
 		if ($clinic_id == 'allclinic') return sendError("Klinik Belum di pilih");
-		$id_daftar=$gets['id'];$status_flag=$gets['status'];
+		$posted = $this->input->get();
+		if (!isset($posted['id'])) return sendError("Missing ID");
+		// $id_daftar = 0;
+		// $id_daftar =  $gets['id'];
+		// $id_daftar =  $id;
+		// echo $id_daftar;
+		$status_flag = 1;
+		// $status_flag = $gets['status'];
+		// echo $status_flag;
 		echo "<table class='table table-bordered rm' cellpadding='1'>
         <thead>    
             <tr style='background-color:lightgrey;'>
@@ -247,7 +258,7 @@ class Pemeriksaan extends CI_Controller
         </thead>";
 		// $no = 1;
 		$subtotal_plg = 0;
-		$data =  $this->pemeriksaan->tampilkan_temp($clinic_id,$id_daftar,$status_flag)->result();
+		$data =  $this->pemeriksaan->tampilkan_temp($clinic_id, $posted['id'], $status_flag)->result();
 		foreach ($data as $d) {
 			echo "<tbody>
             <tr id='dataobat$d->resep_detail_id'>

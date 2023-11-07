@@ -379,6 +379,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
+					<input type="text" class="hide" name="id_pendaftaran" id="id_pendaftaran" value="">
 					<div class="row">
 						<section class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 							<table width="100%" class="display">
@@ -396,7 +397,6 @@
 						</section>
 						<section class="col-lg-6 col-md-6 col-sm-12 col-xs-12 border-left-dashed">
 							<table width="100%" class="display">
-
 								<tr>
 									<td>No Rekam Medis</td>
 									<td>:</td>
@@ -432,8 +432,6 @@
 													<input type="text" name="nama" class="form-control input-sm clear" autocomplete="off">
 													<input type="hidden" name="id_obat" class="form-control input-sm clear" autocomplete="off">
 												</div>
-
-
 												<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
 													<label class="form-label" style="font-size: 9px;">Satuan</label>
 													<div class="d-grid d-md-flex ">

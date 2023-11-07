@@ -79,7 +79,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-				<input type="text" class="hide" name="id_pendaftaran" id="id_pendaftaran" value="">
+					<input type="text" class="hide" name="id_pendaftaran" id="id_pendaftaran" value="">
 					<div class="row">
 						<section class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 							<table width="100%" class="display">
@@ -221,7 +221,7 @@
 
 				</div>
 				<div class="modal-footer">
-				
+
 					<button type="submit" id="save-resep" class="btn btn-indigo"><?= lang('label_save'); ?></button>
 					<button type="button" class="btn btn-danger" data-dismiss="modal"><?= lang('label_close'); ?></button>
 				</div>

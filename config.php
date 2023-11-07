@@ -23,7 +23,8 @@ date_default_timezone_set("Asia/Jakarta");
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/ctc-medicloud';
+$config['base_url'] = 'http://localhost:8080/medicloud/';
+// $config['base_url'] = 'http://localhost/ctc-medicloud';
 // $config['base_url'] = 'http://128.199.173.88/ctc-medicloud';
 
 /*

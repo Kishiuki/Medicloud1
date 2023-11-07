@@ -61,11 +61,13 @@ class Pasien_telah_diperiksa extends CI_Controller
 		if ($id == '' || $id == null) sendError("Missing ID");
 		$search = $this->pasien_telah_diperiksa->_search_pemeriksaan($id);
 		if (empty($search)) sendError(lang('msg_no_record'));
+		$search_dokter_diagnosa_pemeriksaan = $this->pasien_telah_diperiksa->_search_dokter_diagnosa_select2($search[0]->id_pemeriksaan);
 		$search_diagnosa_pemeriksaan = $this->pasien_telah_diperiksa->_search_diagnosa_pemeriksaan_select2($search[0]->id_pemeriksaan);
+		$search_dokter_tindakan_pemeriksaan = $this->pasien_telah_diperiksa->_search_dokter_tindakan_select2($search[0]->id_pemeriksaan);
 		$search_tindakan_pemeriksaan = $this->pasien_telah_diperiksa->_search_tindakan_pemeriksaan_select2($search[0]->id_pemeriksaan);
 		// print_r($search_tindakan_pemeriksaan);
 		// die();
-		echo json_encode(array("data" => $search[0], "diagnosa_pemeriksaan" => $search_diagnosa_pemeriksaan, "tindakan_pemeriksaan" => $search_tindakan_pemeriksaan));
+		echo json_encode(array("data" => $search[0], "dokter_diagnosa" => $search_dokter_diagnosa_pemeriksaan, "diagnosa_pemeriksaan" => $search_diagnosa_pemeriksaan, "dokter_tindakan" => $search_dokter_tindakan_pemeriksaan, "tindakan_pemeriksaan" => $search_tindakan_pemeriksaan));
 	}
 	public function save__()
 	{
@@ -80,6 +82,7 @@ class Pasien_telah_diperiksa extends CI_Controller
 		$id_pendaftaran = htmlentities(trim($posted['_id']));
 		$id_antrian = htmlentities(trim($posted['_id_antrian']));
 		$id_pemeriksaan = htmlentities(trim($posted['id_pemeriksaan']));
+		// $fk_dokter = htmlentities(trim($posted['fk_dokter']));
 		$data_pemeriksaan = array(
 			"id_pendaftaran"        => $id_pendaftaran,
 			"kesadaran"             => $kesadaran,
@@ -207,7 +210,7 @@ class Pasien_telah_diperiksa extends CI_Controller
 		if ($stock[0]->stok < (int) $qty * $isi) sendError("Stok obat \"" . $obat . "\" (" . $stock[0]->stok . ") tidak mencukupi. ");
 		$data = array(
 			"fk_obat" 	=> $id_obat,
-			"fk_pendaftaran"=>$id_pendaftaran,
+			"fk_pendaftaran" => $id_pendaftaran,
 			"qty" 		=> $qty,
 			"total" 	=> $total,
 			"isi" 		=> $isi,
@@ -232,9 +235,9 @@ class Pasien_telah_diperiksa extends CI_Controller
 	function load_temp()
 	{
 		$posted = $this->input->get();
-		if(!isset($posted['id'])) return sendError("Missing ID");
+		if (!isset($posted['id'])) return sendError("Missing ID");
 		$clinic_id = (!isset($clinic_id) || $clinic_id == 'default') ? getClinic()->id : htmlentities(trim($posted['clinic_id']));
-		if($clinic_id=='allclinic' && isset($posted['clinic_id'])) $clinic_id=$posted['clinic_id'];
+		if ($clinic_id == 'allclinic' && isset($posted['clinic_id'])) $clinic_id = $posted['clinic_id'];
 		if ($clinic_id == 'allclinic') return sendError("Klinik Belum di pilih");
 
 		echo "<table class='table table-bordered rm' cellpadding='1'>
@@ -253,7 +256,7 @@ class Pasien_telah_diperiksa extends CI_Controller
         </thead>";
 		// $no = 1;
 		$subtotal_plg = 0;
-		$data =  $this->pasien_telah_diperiksa->tampilkan_temp($clinic_id,$posted['id'])->result();
+		$data =  $this->pasien_telah_diperiksa->tampilkan_temp($clinic_id, $posted['id'])->result();
 		foreach ($data as $d) {
 			echo "<tbody>
             <tr id='dataobat$d->resep_detail_id'>

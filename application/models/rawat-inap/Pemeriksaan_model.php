@@ -142,7 +142,7 @@ class Pemeriksaan_model extends CI_Model
 	{
 		$this->db->insert_batch('tbl_pemeriksaan_tindakan', $data);
 	}
-	function update_poli_pendaftaran($dtpoli, $id_pendaftaran)
+	function update_poli_pendaftaran($dtpoli, $id_pendaftaran, $status_flag)
 	{
 		$this->db->query("UPDATE tbl_pendaftaran SET poli='$dtpoli'  where id_pendaftaran='$id_pendaftaran'");
 	}
@@ -206,15 +206,17 @@ class Pemeriksaan_model extends CI_Model
 	{
 		$this->db->query("UPDATE tbl_pendaftaran SET status_rawat=4 where id_pendaftaran='$id_pendaftaran'");
 	}
-	function tampilkan_temp($clinic_id,$id_daftar,$status_flag)
+	// function tampilkan_temp($clinic_id, $id_daftar)
+	function tampilkan_temp($clinic_id, $id_daftar, $status_flag)
 	{
 		$query = "SELECT o.nama,o.kode,o.hargaJual,s.namaSatuanobat,td.*,aturan.nama_aturan_pakai,cara.nama_cara_pakai
                 FROM tbl_resep_detail as td,tbl_obat as o, tbl_satuan_obat as s,tbl_resep_aturan_pakai as aturan,tbl_resep_cara_pakai as cara,tbl_obat_detail as de
-         WHERE td.clinic_id='$clinic_id' AND td.fk_pendaftaran='$id_daftar' AND o.idObat=td.fk_obat and td.satuan=de.obat_detail_id and de.satuan=s.idSatuanobat and aturan.id=td.aturan_pakai and cara.id=td.cara_pakai";
-		$data=$this->db->query($query);
+         WHERE td.clinic_id='$clinic_id' AND td.fk_pendaftaran='$id_daftar' AND o.idObat=td.fk_obat and td.satuan=de.obat_detail_id and de.satuan=s.idSatuanobat and aturan.id=td.aturan_pakai and cara.id=td.cara_pakai ORDER BY de.status = '$status_flag' DESC";
+		$data = $this->db->query($query);
 		// echo $this->db->last_query();
 		return $data;
 	}
+
 	function check_stock_obat($id_obat)
 	{
 		$this->db->select('idObat,stok')->from($this->tableObat);
